@@ -1,0 +1,277 @@
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+library(tidyr)
+library(broom)
+
+#ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/ceg.csv")
+library(readr)
+
+
+ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv") %>%
+mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA)) 
+
+
+install.packages("skimr")
+library(skimr)
+install.packages("GGally")
+library(GGally)
+
+
+
+#==========================================================================
+#==========================================================================
+#
+library(ggplot2)
+ggplot(ceg, aes(CE_sindistractibilidad, Calificacion, col=Sexo) ) +
+geom_point() +
+geom_smooth(method="lm", se=T, fullrange=TRUE) +
+         annotate("point",
+#                   xmin=0, xmax=7,
+                    x=mean(ceg$CE_sindistractibilidad), 
+                    y=mean(ceg$Calificacion) , 
+                     col="steelblue", size=4) +
+labs(title = "y = Bx + i")
+
+
+#==============================================================
+#==========================================================================
+#==========================================================================
+#
+
+ggplot(ceg, aes(Calificacion, fill=Sexo) ) +
+geom_density(alpha=0.6)
+
++
+geom_smooth(method="lm", se=F, fullrange=TRUE) +
+         annotate("point",
+                   xmin=0, xmax=7,
+                    x=mean(overh$Focalizacióndelaatención), 
+                    y=mean(overh$Total_word_learning) , 
+                     col="steelblue", size=3) +
+labs(title = "y = Bx + i")
+
+
+#==============================================================
+
+ceg %>% select(Tipo_escuela, Calificacion, Sexo, ANT_errores_porcentaje_50:ANT_filtrado_50) %>% dplyr::filter(!is.na(ANT_errores_porcentaje_50)) %>% ggpairs(aes(col=Sexo))
+ceg %>% select(Tipo_escuela, Calificacion, Sexo, Alerta:Spatial_Cue_rt) %>% dplyr::filter(!is.na(Alerta)) %>% ggpairs(aes(col=Sexo))
+
+
+
+
+cor(csub)
+ggplot(ceg, aes(Calificacion, fill=as.factor(Sexo))) +
+        geom_density(alpha=0.5)
+        geom_histogram(binwidth=0.1, position="identity", alpha=0.5)
+?geom_histogram
++
+        geom_smooth(method="lm")
+ggplot(ceg, aes(CE_sindistractibilidad, Calificacion, col=as.factor(Tipo_escuela))) +
+        geom_jitter() + 
+        geom_smooth(method="lm")
+?geom_histogram
++
+
+names(ceg)
+
+
+library(dplyr)
+library(tidytext)
+
+
+ceg %>% select(nivelactividad : conjunto_atencion) %>% dplyr::filter(!is.na(nivel_actividad)) %>%  -> traits 
+
+fa_traits <- stats::factanal(traits, factors=3, rotation="promax")
+print(fa_traits, digits=2, cutoff=0.30)
+
+
+#loadings arranged by 3rd factor. It shows large overlap
+fa_traits %>% broom::tidy() %>%  arrange(desc(abs(fl3))   )
+
+
+
+#=======================
+fa_traits %>% broom::tidy() %>% select(-uniqueness) %>% pivot_longer(cols=-variable) %>% dplyr::filter(abs(value)>.30) %>%
+ggplot(aes(value, reorder(variable, abs(value)), fill=variable)) +
+geom_col() +
+facet_wrap(~name)
+
+
+##using reorder_within
+#fa_traits %>% broom::tidy() %>% select(-uniqueness) %>% pivot_longer(cols=-variable) %>% dplyr::filter(abs(value)>.30) %>% mutate(variable=reorder_within(variable, abs(value), name)) %>% ggplot(aes(abs(value), variable, fill=value>0)) + geom_col() + scale_y_reordered() + facet_wrap(~name)
+
+
+pca_traits <- prcomp(traits)
+
+
+pca_traits %>% broom::tidy(matrix="loadings") %>% mutate(column=reorder_within(column, abs(value), PC)) %>% 
+ggplot(aes(abs(value), column, fill=value>0)) +
+geom_col() +
+scale_y_reordered() +
+facet_wrap(~PC, scales="free")
+
+plot(pca_traits)
+
+biplot(pca_traits)
+
+
+pca_traits %>% broom::tidy(matrix="loadings") %>% mutate(column=reorder_within(column, abs(value), PC)) %>% group_by(column) %>% top_n(10, abs(value)) %>% dplyr::filter(PC<7) %>% 
+ggplot(aes(abs(value), column, fill=value>0)) +
+geom_col() +
+scale_y_reordered() +
+facet_wrap(~PC, scales="free")
+
+
+pca_traits %>% broom::tidy(matrix="loadings") %>% group_by(PC) %>% arrange(PC,desc(abs(value))) 
+```
+```{r}
+#LOAD DATABASE
+overh  <- haven::read_sav("b2c.sav", col_select=-"V55")
+#DATASET INATTENTIONAL BLINDNESS
+#blind <- read.csv("https://raw.githubusercontent.com/umontano/CBQFactorAnalisys/master/karenRclean.csv")
+
+############################## 
+library(lavaan)
+library(semTools)
+
+#SPECIFIYING THE MODEL
+specm  <- "
+#DIRECT EFFECT 
+Total_word_learning ~ c* TOTALEXTR + TOTALAFEC + TOTALCONTROL
+
+#INDIRECT PATH A 
+Señala ~ a* TOTALEXTR + TOTALAFEC + TOTALCONTROL
+
+#INDIRECT PATH B
+Total_word_learning ~ b* Señala
+
+#MEDIATION INTERACTION, indirect and total effects
+         ab := a * b
+         total := c + ab
+	 "
+
+	 #gernereating model
+fitsem  <- sem(specm, data=overh)
+summary(fitsem)
+
+
+library(semPlot)
+# Path diagram:
+semPaths(fitsem)
+# Standardized estimates:
+semPaths(fitsem, "std", "hide")
+
+library(tidySEM)
+#DIAGRAM TIDYSEM
+tidySEM::graph_sem(model = fitsem)
+
+
+#==========================================================================
+#==========================================================================
+#MULTI-TRAITS PATH ANALYSIS WITH SENALA INICIACONVER AND ACERCAMIENTO
+model <- "
+#MEDIATORS
+Iniciaconversación ~ m1* Placerdealtaintensidad + Impulsividad + Timidez + sonrisayrisa + Focalizacióndelaatención + Controlinhibitorio + Placerdebajaintensidad
+Señala ~ m2* Placerdealtaintensidad + Impulsividad + Timidez + sonrisayrisa + Focalizacióndelaatención + Controlinhibitorio + Placerdebajaintensidad
+Acercamiento ~ m3* Placerdealtaintensidad + Impulsividad + Timidez + sonrisayrisa + Focalizacióndelaatención + Controlinhibitorio + Placerdebajaintensidad
+#TOTAL PATH
+Total_word_learning ~ p1*Iniciaconversación +
+p2*Señala + p3*Acercamiento +
+p4*Placerdealtaintensidad + p5*Impulsividad + p6*Timidez + p7*sonrisayrisa +
+p8*Focalizacióndelaatención + p9*Controlinhibitorio + p10*Placerdebajaintensidad
+
+Señala ~~ Iniciaconversación
+Señala ~~ Acercamiento
+Iniciaconversación ~~ Acercamiento
+
+ind1 := m1*p1
+ind2 := m2*p2
+ind3 := m3*p3
+total := p9 + p4 + p5 + p6 + p7 + p8 + p10 + m1*p1 + m1*p2 + m3*p3
+indirect := m1*p1 + m1*p2 + m3*p3
+"
+
+
+
+model <- "
+#MEDIATORS
+Iniciaconversación ~ m1* Placerdealtaintensidad + Impulsividad + Timidez + sonrisayrisa + Focalizacióndelaatención + Controlinhibitorio + Placerdebajaintensidad
+Señala ~ m2* Placerdealtaintensidad + Impulsividad + Timidez + sonrisayrisa + Focalizacióndelaatención + Controlinhibitorio + Placerdebajaintensidad
+#TOTAL PATH
+Total_word_learning ~ p1*Iniciaconversación +
+p2*Señala + p3*Acercamiento +
+p4*Placerdealtaintensidad + p5*Impulsividad + p6*Timidez + p7*sonrisayrisa +
+p8*Focalizacióndelaatención + p9*Controlinhibitorio + p10*Placerdebajaintensidad
+
+Señala ~~ Iniciaconversación
+
+ind1 := m1*p1
+total := p7 + m1*p1 + m1*p2 + m3*p3
+indirect := m1*p1 + m1*p2 + m3*p3
+"
+
+res <- sem(model, data=overh)
+summary(res)
+
+semPaths(res)
+# Standardized estimates:
+semPaths(res, "std", "hide")
+
+library(tidySEM)
+#DIAGRAM TIDYSEM
+tidySEM::graph_sem(model = res)
+
+
+
+
+#==========================================================================
+#==========================================================================
+#
+specm  <- "
+#DIRECT EFFECT 
+Total_word_learning ~ c* Controlinhibitorio
+#INDIRECT PATH A 
+Iniciaconversación ~ a* Controlinhibitorio
+#INDIRECT PATH B
+Total_word_learning ~ b*Iniciaconversación
+#MEDIATION INTERACTION
+ab := a*b
+#total DIRECT PATH
+tot := c + ab
+"
+fitsem  <- sem(specm, data=overh)
+summary(fitsem)
+
+
+#==========================================================================
+#==========================================================================
+#
+library(ggplot2)
+ggplot(overh, aes(Focalizacióndelaatención, Total_word_learning) ) +
+geom_point() +
+geom_smooth(method="lm", se=F, fullrange=TRUE) +
+         annotate("point",
+                   xmin=0, xmax=7,
+                    x=mean(overh$Focalizacióndelaatención), 
+                    y=mean(overh$Total_word_learning) , 
+                     col="steelblue", size=3) +
+labs(title = "y = Bx + i")
+
+
+#==============================================================
+#ANALISIS DE FACTORES, CON TRES FACTORES
+res <- factanal(traits, factors=3, rotation = "promax")
+print(res, digits = 2, cutoff = 0.7, sort = TRUE)
+
+library(tidymodels)
+tidy(res) %>% select(-uniqueness) %>% pivot_longer(cols=-variable) %>% mutate(variable=reorder_within(variable, abs(value), name)) %>%
+mutate(positive=value>0, abv=abs(value)) %>% 
+ggplot(aes(abv, variable, fill=positive)) +
+geom_col() +
+scale_y_reordered() +
+facet_wrap(~name, scales="free_y")
+
+```
+
