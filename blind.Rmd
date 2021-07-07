@@ -5,9 +5,16 @@ date:
 output: pdf_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+---
+
 # Analisis de Mediacion, por Genero y tipo de escuela
 
-Code at: <https://github.com/umontano/kar/blob/master/blind.Rmd>
+Codigo fuente dispobible en:
+
+<https://github.com/umontano/kar/blob/master/blind.Rmd>
 
 ```{r}
 library(dplyr)
@@ -59,11 +66,11 @@ mediation_model <- sem(spec, data=ceg)
 summary(mediation_model)
 
 #Graficamos el modelo
-#library(tidySEM)
-#graph_sem(mediation_model)
+library(tidySEM)
+graph_sem(mediation_model)
 
-library(semPlot)
-semPaths(mediation_model)
+#library(semPlot)
+#semPaths(mediation_model)
 
 
 
