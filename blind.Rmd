@@ -5,26 +5,65 @@ date:
 output: pdf_document
 ---
 
+# Analisis de Mediacion, por Genero y tipo de escuela
+
+Code at: <https://github.com/umontano/kar/blob/master/blind.Rmd>
 
 ```{r}
 library(dplyr)
+library(backports)
 library(ggplot2)
 library(tidytext)
 library(tidyr)
 library(broom)
-
-#ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/ceg.csv")
-library(readr)
-
+library(skimr)
+library(GGally)
 
 ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv") %>%
-mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA)) 
+#mutate(Sexo=1-as.numeric(Sexo))  %>% 
+mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA))  %>% 
+tibble()
+
+lm(Calificacion ~ Sexo*CE_sindistractibilidad, data=ceg) %>% summary
+lm(Calificacion ~ Tipo_escuela + Sexo + CE_sindistractibilidad, data=ceg) %>% summary %>% coef 
+
+#==========================================================================
+#==========================================================================
+#En un analisis de MEDIACION,  el diagrama causal tiene dos vias,  indirecta y  directa.
+#Via Indirecta:    Sexo > CE > Calif
+#Via directa:      Sexo > Calif
+#Nuestra tarea para conducir el analis de mediacion, tiene tres pasos:
+#1. Specificar el modelo
+#2. Generar modelo estadistico
+#3. Analizar los resultados
 
 
-install.packages("skimr")
-library(skimr)
-install.packages("GGally")
-library(GGally)
+#====== 1. Especificacion de modelo
+spec <- "
+# PATH A
+CE_sindistractibilidad ~ a* Sexo
+#PATH B
+Calificacion ~ b* CE_sindistractibilidad 
+#PATH C
+Calificacion ~ c* Sexo
+#PARAMETERS RELEVANT TO MEDIATION ANALYSIS
+ab := a*b
+total := c + a*b
+"
+
+#====== 2. Generacion del modelo estadistico
+library(lavaan)
+mediation_model <- sem(spec, data=ceg)
+
+#====== 3. Inspeccion y Analisis del modelo
+summary(mediation_model)
+
+#Graficamos el modelo
+#library(tidySEM)
+#graph_sem(mediation_model)
+
+library(semPlot)
+semPaths(mediation_model)
 
 
 
@@ -33,8 +72,8 @@ library(GGally)
 #
 library(ggplot2)
 ggplot(ceg, aes(CE_sindistractibilidad, Calificacion, col=Sexo) ) +
-geom_point() +
-geom_smooth(method="lm", se=T, fullrange=TRUE) +
+	geom_point() +
+	geom_smooth(method="lm", se=T, fullrange=TRUE) +
          annotate("point",
 #                   xmin=0, xmax=7,
                     x=mean(ceg$CE_sindistractibilidad), 
@@ -89,7 +128,7 @@ library(dplyr)
 library(tidytext)
 
 
-ceg %>% select(nivelactividad : conjunto_atencion) %>% dplyr::filter(!is.na(nivel_actividad)) %>%  -> traits 
+traits  <- ceg %>% select(nivelactividad : conjunto_atencion) %>% dplyr::filter(!is.na(nivelactividad))
 
 fa_traits <- stats::factanal(traits, factors=3, rotation="promax")
 print(fa_traits, digits=2, cutoff=0.30)
@@ -134,6 +173,7 @@ facet_wrap(~PC, scales="free")
 
 pca_traits %>% broom::tidy(matrix="loadings") %>% group_by(PC) %>% arrange(PC,desc(abs(value))) 
 ```
+
 ```{r}
 #LOAD DATABASE
 overh  <- haven::read_sav("b2c.sav", col_select=-"V55")
@@ -282,4 +322,3 @@ scale_y_reordered() +
 facet_wrap(~name, scales="free_y")
 
 ```
-
