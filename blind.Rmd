@@ -8,7 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
----
+
 
 # Analisis de Mediacion, por Genero y tipo de escuela
 
@@ -16,7 +16,7 @@ Codigo fuente dispobible en:
 
 <https://github.com/umontano/kar/blob/master/blind.Rmd>
 
-```{r}
+```{r, include=FALSE}
 library(dplyr)
 library(backports)
 library(ggplot2)
@@ -26,7 +26,9 @@ library(broom)
 library(skimr)
 library(GGally)
 
-ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv") %>%
+ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+
+ceg%>%
 #mutate(Sexo=1-as.numeric(Sexo))  %>% 
 mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA))  %>% 
 tibble()
