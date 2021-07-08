@@ -1,14 +1,11 @@
 ---
-title: "Ceg"
-author: "All"
-date:
+title: "Ceguera Inatencional, Analisis"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 
 # Analisis de Mediacion, por Genero y tipo de escuela
 
@@ -26,13 +23,37 @@ library(broom)
 library(skimr)
 library(GGally)
 
+# CARGA DATOS
 ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
 
-ceg%>%
-#mutate(Sexo=1-as.numeric(Sexo))  %>% 
+
+#CHEATSHEETS
+#
+#dplyr
+#
+#Ejemplos de select y filter
+ceg %>%
+select(Sexo, Calificacion) %>%
+filter(Sexo==1) %>%
+mutate(nueva = Sexo*5 ) %>%
+tibble()
+
+
+ceg %>%
+select(starts_with("S")) %>%
+filter(Sexo==0, Sonrisa_Risa>6 ) %>%
+mutate(nueva = Sonrisa_Risa *5 ) %>%
+select(nueva, everything() ) %>%
+tibble()
+
+
+# LAS VARIABLES SEXO TIPOESCUELA Y ESCUELA SE CAMBIARON DE NUMERICAS A FACTORES
+ceg  <- ceg %>%
 mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA))  %>% 
 tibble()
 
+
+# modelos lineares usando PIPE (%>%)
 lm(Calificacion ~ Sexo*CE_sindistractibilidad, data=ceg) %>% summary
 lm(Calificacion ~ Tipo_escuela + Sexo + CE_sindistractibilidad, data=ceg) %>% summary %>% coef 
 
@@ -47,18 +68,31 @@ lm(Calificacion ~ Tipo_escuela + Sexo + CE_sindistractibilidad, data=ceg) %>% su
 #3. Analizar los resultados
 
 
+# fct1 <~  CI + PBI + FCA + MA 
+#   CI ~~ PB
+#   CI ~~ FCA
+#   CI ~~ MA
+#   PB ~~ FCA
+#   
+
++ FCA + MA 
+
+
 #====== 1. Especificacion de modelo
 spec <- "
 # PATH A
 CE_sindistractibilidad ~ a* Sexo
 #PATH B
 Calificacion ~ b* CE_sindistractibilidad 
-#PATH C
+#PiATH C
 Calificacion ~ c* Sexo
 #PARAMETERS RELEVANT TO MEDIATION ANALYSIS
 ab := a*b
 total := c + a*b
 "
+
+
+
 
 #====== 2. Generacion del modelo estadistico
 library(lavaan)
@@ -78,10 +112,12 @@ graph_sem(mediation_model)
 
 #==========================================================================
 #==========================================================================
-#
+#i
+
+names(ceg)
 library(ggplot2)
-ggplot(ceg, aes(CE_sindistractibilidad, Calificacion, col=Sexo) ) +
-	geom_point() +
+ggplot(ceg, aes(Tipo_escuela, Conflicto, col=Sexo) ) +
+        geom_point() +
 	geom_smooth(method="lm", se=T, fullrange=TRUE) +
          annotate("point",
 #                   xmin=0, xmax=7,
