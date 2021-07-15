@@ -24,8 +24,11 @@ library(skimr)
 library(GGally)
 
 # CARGA DATOS
-ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
-
+ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+# LAS VARIABLES SEXO TIPOESCUELA Y ESCUELA SE CAMBIARON DE NUMERICAS A FACTORES
+ceg  <- ceg %>%
+mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA))  %>% 
+tibble()
 
 #CHEATSHEETS
 #
@@ -35,22 +38,16 @@ ceg  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/cegu.csv
 ceg %>%
 select(Sexo, Calificacion) %>%
 filter(Sexo==1) %>%
-mutate(nueva = Sexo*5 ) %>%
-tibble()
+mutate(nueva = Sexo*5 ) 
 
 
 ceg %>%
 select(starts_with("S")) %>%
-filter(Sexo==0, Sonrisa_Risa>6 ) %>%
-mutate(nueva = Sonrisa_Risa *5 ) %>%
-select(nueva, everything() ) %>%
-tibble()
+filter(Sexo==0, Sonrisa_Risa>6) %>%
+mutate(nueva = Sonrisa_Risa*5) %>%
+select(nueva, everything() ) 
 
 
-# LAS VARIABLES SEXO TIPOESCUELA Y ESCUELA SE CAMBIARON DE NUMERICAS A FACTORES
-ceg  <- ceg %>%
-mutate(Sexo=as.factor(Sexo), Tipo_escuela=as.factor(Tipo_escuela), ESCUELA=as.factor(ESCUELA))  %>% 
-tibble()
 
 
 # modelos lineares usando PIPE (%>%)
@@ -60,8 +57,8 @@ lm(Calificacion ~ Tipo_escuela + Sexo + CE_sindistractibilidad, data=ceg) %>% su
 #==========================================================================
 #==========================================================================
 #En un analisis de MEDIACION,  el diagrama causal tiene dos vias,  indirecta y  directa.
-#Via Indirecta:    Sexo > CE > Calif
-#Via directa:      Sexo > Calif
+#Via Indirecta:    Sexo >>> CE >>> Calif
+#Via directa:      Sexo >>> Calif
 #Nuestra tarea para conducir el analis de mediacion, tiene tres pasos:
 #1. Specificar el modelo
 #2. Generar modelo estadistico
@@ -112,19 +109,15 @@ graph_sem(mediation_model)
 
 #==========================================================================
 #==========================================================================
-#i
-
-names(ceg)
+#============================================
+#ALERTA ATENCIONAL POR ESCUELA PUBLICA/PRIVADA
 library(ggplot2)
-ggplot(ceg, aes(Tipo_escuela, Conflicto, col=Sexo) ) +
-        geom_point() +
-	geom_smooth(method="lm", se=T, fullrange=TRUE) +
-         annotate("point",
-#                   xmin=0, xmax=7,
-                    x=mean(ceg$CE_sindistractibilidad), 
-                    y=mean(ceg$Calificacion) , 
-                     col="steelblue", size=4) +
-labs(title = "y = Bx + i")
+library(ggbeeswarm)
+ggplot(ceg, aes(ESCUELA, Alerta, col=Tipo_escuela) ) +
+        geom_quasirandom(cex=2, priority="density") +
+	geom_boxplot(alpha=0.3) +
+scale_color_brewer(palette="Dark2") +
+coord_flip()
 
 
 #==============================================================
