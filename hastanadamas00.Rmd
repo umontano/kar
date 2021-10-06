@@ -1,0 +1,91 @@
+---
+title: "Hasta-Nada Mas Analysis"
+output: 
+  pdf_document: 
+    number_sections: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# RESULTS
+
+```{r, include=FALSE}
+library(dplyr)
+library(gtsummary)
+library(gt)
+
+#hast  <- read.csv("V4.csv")
+hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
+
+#hast$Tiempo <- scale(hast$Tiempo, center=TRUE, scale=TRUE)
+
+results_anova <- aov(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
+```
+
+## Two-Way Boxplot
+
+```{r boxplot, include=TRUE}
+
+boxplot(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
+
+```
+
+
+```{r regression1, include=FALSE}
+
+m1 <- lm(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
+
+```
+
+## Results of Multivariate Regression with Interaction
+
+```{r table1, echo=FALSE}
+m1  %>%
+        tbl_regression(exponentiate = FALSE, intercept=FALSE)  %>%
+        as_gt()  %>%
+        tab_header("Coeffiecients for the Model Image and MD as predictors of RTs, with Interaction", subtitle = NULL)
+
+
+```
+
+
+
+
+## Regression Without Interaction
+
+```{r regression2, include=FALSE}
+
+m2 <- lm(Tiempo ~ Imagen + MD , data=hast)
+#summary(lm(Tiempo ~ Imagen , data=hast))
+#summary(lm(Tiempo ~ MD , data=hast))
+
+
+```
+```{r table2, echo=FALSE}
+m2  %>%
+        tbl_regression(exponentiate = FALSE, intercept=FALSE)  %>%
+        as_gt()  %>%
+        tab_header("Coeffiecients for the Model, without Interaction", subtitle = NULL)
+
+
+```
+
+
+
+
+## Results Of Two-Way ANOVA 
+
+```{r anova, include=TRUE}
+summary(results_anova)
+
+
+```
+
+## Tukey Post-Hoc Analysis
+
+```{r}
+TukeyHSD(results_anova)
+```
