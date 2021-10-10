@@ -11,44 +11,40 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # RESULTS
+c:s-t:h
+c:s-t:h
+c:s-t:h
 
 ```{r, include=FALSE}
+library(lme4)
 library(dplyr)
-library(gtsummary)
-library(gt)
 
 #hast  <- read.csv("V4.csv")
 hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
-
-#hast$Tiempo <- scale(hast$Tiempo, center=TRUE, scale=TRUE)
-
-results_anova <- aov(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
 ```
 
-## Two-Way Boxplot
+## Interaction DM-Image  Boxplot
 
 ```{r boxplot, include=TRUE}
-
-boxplot(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
-
+#pdf("~/u/boxplot.pdf")
+# SVG graphics device
+#svg("my_plot.svg")
+# Code of the plot
+pdf("boxplot_by_DM_cht.pdf")
+boxplot(Tiempo ~  Imagen : MD   , data=hast)
+dev.off()
 ```
 
 
-```{r regression1, include=FALSE}
 
-m1 <- lm(Tiempo ~ Imagen + MD + Imagen:MD, data=hast)
-
-```
 
 ## Results of Multivariate Regression with Interaction
 
 ```{r table1, echo=FALSE}
-m1  %>%
+linear %>%
         tbl_regression(exponentiate = FALSE, intercept=FALSE)  %>%
         as_gt()  %>%
         tab_header("Coeffiecients for the Model Image and MD as predictors of RTs, with Interaction", subtitle = NULL)
-
-
 ```
 
 
@@ -56,36 +52,77 @@ m1  %>%
 
 ## Regression Without Interaction
 
-```{r regression2, include=FALSE}
-
-m2 <- lm(Tiempo ~ Imagen + MD , data=hast)
-#summary(lm(Tiempo ~ Imagen , data=hast))
-#summary(lm(Tiempo ~ MD , data=hast))
-
+```{r}
+linear <- glm(Tiempo ~  1 + Imagen : MD   , family = gaussian, data=hast)
+summary(linear)
 
 ```
-```{r table2, echo=FALSE}
-m2  %>%
-        tbl_regression(exponentiate = FALSE, intercept=FALSE)  %>%
-        as_gt()  %>%
-        tab_header("Coeffiecients for the Model, without Interaction", subtitle = NULL)
-
-
-```
-
-
-
-
-## Results Of Two-Way ANOVA 
-
-```{r anova, include=TRUE}
-summary(results_anova)
-
-
-```
-
-## Tukey Post-Hoc Analysis
 
 ```{r}
-TukeyHSD(results_anova)
+resultsanova <- aov(Tiempo ~  1 + Imagen : MD   ,  data=hast)
+summary(resultsanova)
+TukeyHSD(resultsanova)
+
+```
+
+
+
+
+
+
+```{r}
+mixed3 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) , family = gaussian, data=hast)
+mixed2 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) , family = gaussian, data=hast)
+mixed1 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) , family = gaussian, data=hast)
+mixed000 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) + (1 | Participante), family = gaussian, data=hast)
+summary(mixed1)
+```
+
+
+```{r}
+AIC(logLik(linear))
+AIC(logLik(mixed1))
+AIC(logLik(mixed2))
+AIC(logLik(mixed3))
+```
+
+```{r}
+anova(linear,  mixed1,  mixed2,  mixed3, test = "Chisq", refit = F)
+```
+
+
+
+```{r}
+anova(mixed1,  mixed2,  mixed3, test = "Chisq", refit = F)
+```
+
+
+```{r}
+anova(linear,  mixed1, test = "Chisq", refit = F)
+```
+
+```{r}
+library(ggplot2)
+
+
+pdf("boxplot_GG_by_DM.pdf")
+ggplot(hast, aes(Imagen, Tiempo, fill=MD)) +
+        geom_boxplot() +
+        facet_wrap(~MD)
+dev.off()
+
+
+```
+
+
+
+```{r}
+
+pdf("/media/vv/1/boxplot_GG_by_IMAGE.pdf")
+ggplot(hast, aes(MD, Tiempo, fill=MD)) +
+        geom_violin() +
+        facet_wrap(~Imagen, nrow = 1)
+dev.off()
+
+
 ```
