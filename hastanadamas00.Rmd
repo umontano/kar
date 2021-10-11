@@ -1,6 +1,6 @@
 ---
 title: "Hasta-Nada Mas Analysis"
-output: 
+output:
   pdf_document: 
     number_sections: yes
 
@@ -11,73 +11,31 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # RESULTS
-c:s-t:h
-c:s-t:h
-c:s-t:h
 
 ```{r, include=FALSE}
 library(lme4)
-library(dplyr)
 
 #hast  <- read.csv("V4.csv")
 hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
-```
 
-## Interaction DM-Image  Boxplot
 
-```{r boxplot, include=TRUE}
-#pdf("~/u/boxplot.pdf")
-# SVG graphics device
-#svg("my_plot.svg")
-# Code of the plot
-pdf("boxplot_by_DM_cht.pdf")
-boxplot(Tiempo ~  Imagen : MD   , data=hast)
-dev.off()
+hast$MD[hast$MD=="s"] <- "a" 
+hast$Imagen[hast$Imagen=="c"] <- "u" 
+
 ```
 
 
 
-
-## Results of Multivariate Regression with Interaction
-
-```{r table1, echo=FALSE}
-linear %>%
-        tbl_regression(exponentiate = FALSE, intercept=FALSE)  %>%
-        as_gt()  %>%
-        tab_header("Coeffiecients for the Model Image and MD as predictors of RTs, with Interaction", subtitle = NULL)
-```
-
-
-
-
-## Regression Without Interaction
-
+## Generating Models
 ```{r}
-linear <- glm(Tiempo ~  1 + Imagen : MD   , family = gaussian, data=hast)
-summary(linear)
-
+mixed3 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) ,  data=hast)
+mixed2 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) ,  data=hast)
+mixed1 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD:Imagen  + (1 | Nombre) , data=hast)
+linear <- glm(Tiempo ~ 1 + MD + Imagen +  MD : Imagen , family = gaussian, data=hast)
 ```
 
-```{r}
-resultsanova <- aov(Tiempo ~  1 + Imagen : MD   ,  data=hast)
-summary(resultsanova)
-TukeyHSD(resultsanova)
-
-```
-
-
-
-
-
-
-```{r}
-mixed3 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) , family = gaussian, data=hast)
-mixed2 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) , family = gaussian, data=hast)
-mixed1 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) , family = gaussian, data=hast)
-mixed000 <- lmer(Tiempo ~  1 + MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) + (1 | Participante), family = gaussian, data=hast)
-summary(mixed1)
-```
-
+# Evaluating Models
+Results show that the best model is the lineat model
 
 ```{r}
 AIC(logLik(linear))
@@ -86,10 +44,9 @@ AIC(logLik(mixed2))
 AIC(logLik(mixed3))
 ```
 
-```{r}
-anova(linear,  mixed1,  mixed2,  mixed3, test = "Chisq", refit = F)
-```
 
+## Mixed Effects Models Evaluation
+Results show that the best models is the one with only one random effect
 
 
 ```{r}
@@ -97,32 +54,32 @@ anova(mixed1,  mixed2,  mixed3, test = "Chisq", refit = F)
 ```
 
 
+# Mixed Effects Model
+
 ```{r}
-anova(linear,  mixed1, test = "Chisq", refit = F)
+summary(mixed1)
 ```
 
+
+## P-VALUES
 ```{r}
-library(ggplot2)
-
-
-pdf("boxplot_GG_by_DM.pdf")
-ggplot(hast, aes(Imagen, Tiempo, fill=MD)) +
-        geom_boxplot() +
-        facet_wrap(~MD)
-dev.off()
-
-
+anova(mixed1)
 ```
 
 
 
+
+
+#  Equivalent ANOVA with post-hoc
+
 ```{r}
-
-pdf("/media/vv/1/boxplot_GG_by_IMAGE.pdf")
-ggplot(hast, aes(MD, Tiempo, fill=MD)) +
-        geom_violin() +
-        facet_wrap(~Imagen, nrow = 1)
-dev.off()
+#resultsanova <- aov(Tiempo   1 + MD + Imagen +  MD : Imagen,  data=hast)
+#summary(resultsanova)
+#TukeyHSD(resultsanova)
 
 
+#(Tiempo ~  1 +
+#(Tiempo ~  1 + MD + Imagen + 
 ```
+
+
