@@ -18,9 +18,10 @@ library(lme4)
 #hast  <- read.csv("V4.csv")
 hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
 
-
+#CHANGE LEVELS NAMES (IN OODER TO CHANGE THE ORDER IN REGRESSIONS)
 hast$MD[hast$MD=="s"] <- "a" 
-hast$Imagen[hast$Imagen=="c"] <- "u" 
+hast$Imagen[hast$Imagen=="d1"] <- "a1" 
+hast$Imagen[hast$Imagen=="d2"] <- "a2" 
 
 ```
 
@@ -77,9 +78,6 @@ anova(mixed1)
 #summary(resultsanova)
 #TukeyHSD(resultsanova)
 
-
-#(Tiempo ~  1 +
-#(Tiempo ~  1 + MD + Imagen + 
 ```
 
 
