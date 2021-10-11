@@ -17,13 +17,15 @@ library(lme4)
 
 #hast  <- read.csv("V4.csv")
 hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
-
-#CHANGE LEVELS NAMES (IN OODER TO CHANGE THE ORDER IN REGRESSIONS)
 hast$MD  <- as.character(hast$MD)
 hast$Imagen  <- as.character(hast$Imagen)
+
+#CHANGE LEVELS NAMES (IN OODER TO CHANGE THE ORDER IN REGRESSIONS)
 hast$MD[hast$MD=="s"] <- "a" 
 hast$Imagen[hast$Imagen=="d1"] <- "a1" 
 hast$Imagen[hast$Imagen=="d2"] <- "a2" 
+
+
 hast$MD  <-as.factor(hast$MD)
 hast$Imagen  <- as.factor(hast$Imagen)
 
