@@ -360,3 +360,11 @@ scale_y_reordered() +
 facet_wrap(~name, scales="free_y")
 
 ```
+
+
+```{r}
+library(ggplot2)
+
+
+```
+
