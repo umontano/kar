@@ -363,8 +363,14 @@ facet_wrap(~name, scales="free_y")
 
 
 ```{r}
+names(ceg)
 library(ggplot2)
-
+library(ggbeeswarm)
+pdf("/media/vv/1/plot.pdf")
+ggplot(ceg, aes(Calificacion, Atencion_foc, col=as.factor(Sexo)) +
+        geom_point(alpha=0.7) +
+        geom_smooth(method = "lm", se = T, fullrange = T)
+dev.off()
 
 ```
 
