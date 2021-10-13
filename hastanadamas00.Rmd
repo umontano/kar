@@ -3,7 +3,6 @@ title: "Hasta-Nada Mas Analysis"
 output:
   pdf_document: 
     number_sections: yes
-
 ---
 
 ```{r setup, include=FALSE}
@@ -14,20 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, include=FALSE}
 library(lme4)
-
 #hast  <- read.csv("V4.csv")
 hast  <- read.csv("https://raw.githubusercontent.com/umontano/kar/master/hasta_nada_mas.csv")
-hast$MD  <- as.character(hast$MD)
-hast$Imagen  <- as.character(hast$Imagen)
 
 #CHANGE LEVELS NAMES (IN OODER TO CHANGE THE ORDER IN REGRESSIONS)
-hast$MD[hast$MD=="s"] <- "a" 
-hast$Imagen[hast$Imagen=="d1"] <- "a1" 
-hast$Imagen[hast$Imagen=="d2"] <- "a2" 
-
-
-hast$MD  <-as.factor(hast$MD)
-hast$Imagen  <- as.factor(hast$Imagen)
+#hast$MD  <- relevel(hast$MD, "s") 
+hast$Imagen  <- factor(hast$Imagen, levels = c("d1", "d2", "t", "c"))
+hast$MD  <- factor(hast$MD, levels = c("s", "n", "h"))
 
 ```
 
@@ -35,15 +27,16 @@ hast$Imagen  <- as.factor(hast$Imagen)
 
 ## Generating Models
 ```{r}
+
 mixed3 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) ,  data=hast)
 mixed2 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) ,  data=hast)
-mixed1 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD:Imagen  + (1 | Nombre) , data=hast)
-linear <- glm(Tiempo ~ 1 + MD + Imagen +  MD : Imagen , family = gaussian, data=hast)
+mixed1 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) , data=hast)
+linear <- glm(Tiempo ~ 1 + MD + Imagen +  MD : Imagen, family = gaussian, data=hast)
+
 ```
 
 # Evaluating Models
 Results show that the best model is the lineat model
-
 ```{r}
 AIC(logLik(linear))
 AIC(logLik(mixed1))
@@ -74,13 +67,10 @@ anova(mixed1)
 ```
 
 
-
-
-
 #  Equivalent ANOVA with post-hoc
 
 ```{r}
-#resultsanova <- aov(Tiempo   1 + MD + Imagen +  MD : Imagen,  data=hast)
+#resultsanova <- aov(Tiempo ~ 1 + MD + Imagen +  MD : Imagen,  data=hast)
 #summary(resultsanova)
 #TukeyHSD(resultsanova)
 
