@@ -9,27 +9,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
-names(ceg)
-
-plot(ceg$Atencion_foc, ceg$Calificacion)
-
-library(ggplot2)
-ggplot(ceg, aes(Atencion_foc, Calificacion
-#                , col=as.factor(Sexo)
-                )) +
-        geom_jitter(alpha=0.5) +
-        geom_smooth(method = "lm", se = T, fullrange = T)
-
-
-library(ggbeeswarm)
-ggplot(ceg, aes(Sexo, Calificacion
-                )) +
-        geom_beeswarm(alpha=0.6) +
-        geom_smooth(method = "lm", se = T, fullrange = T)
-
-```
 
 
 
@@ -108,3 +87,22 @@ anova(mixed1)
 ```
 
 
+```{r}
+
+library(ggplot2)
+library(ggbeeswarm)
+ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+plot(ceg$Atencion_foc, ceg$Calificacion)
+
+ggplot(ceg, aes(Atencion_foc, Calificacion
+#                , col=as.factor(Sexo)
+                )) +
+        geom_jitter(alpha=0.5) +
+        geom_smooth(method = "lm", se = T, fullrange = T)
+
+ggplot(ceg, aes(Sexo, Calificacion
+                )) +
+        geom_beeswarm(alpha=0.6) +
+        geom_smooth(method = "lm", se = T, fullrange = T)
+
+```
