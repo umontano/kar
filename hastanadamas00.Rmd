@@ -88,9 +88,10 @@ anova(mixed1)
 
 
 ```{r}
-
+#https://raw.githubusercontent.com/umontano/kar/master/ceguera_mafer.csv
 library(ggplot2)
 library(ggbeeswarm)
+#ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/ceguera_mafer.csv")
 ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
 plot(ceg$Atencion_foc, ceg$Calificacion)
 
