@@ -54,9 +54,9 @@ hast$MD  <- factor(hast$MD, levels = c("s", "n", "h"))
 ## Generating Models
 ```{r}
 
-mixed3 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) , data=hast, model=FALSE, x=FALSE, y=FALSE)
-mixed2 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) , data=hast, model=FALSE, x=FALSE, y=FALSE)
-mixed1 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD:Imagen  + (1 | Nombre) , data=hast, model=FALSE, x=FALSE, y=FALSE)
+mixed3 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) + (1 | Sexo) , data=hast)
+mixed2 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD : Imagen  + (1 | Nombre) + (1 | Edad) , data=hast)
+mixed1 <- lmer(Tiempo ~ 1 + MD + Imagen +  MD:Imagen  + (1 | Nombre) , data=hast)
 linear <- glm(Tiempo ~ 1 + MD + Imagen +  MD : Imagen , family = gaussian, data=hast, model=FALSE, x=FALSE, y=FALSE)
 
 save(mixed3, file = "mixed3.Rdata")
