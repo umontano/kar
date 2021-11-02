@@ -11,8 +11,15 @@ library(knitr)
 
 ```{r}
 ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+ceg$Tipo_escuela  <- as.factor( ceg$Tipo_escuela )
 
 names(ceg)
+
+modelo1  <- lm(Calificacion ~ conjunto_atencion, data=ceg)
+summary(modelo1)
+modelo2  <- lm(Calificacion ~ conjunto_atencion + Tipo_escuela + conjunto_atencion:Tipo_escuela, data=ceg)
+
+summary(modelo2)
 
 plot(ceg$Atencion_foc, ceg$Calificacion)
 
