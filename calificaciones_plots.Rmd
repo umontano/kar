@@ -10,7 +10,8 @@ library(knitr)
 ```
 
 ```{r}
-ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+#ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/ceguera_mafer.csv")
 ceg$Tipo_escuela  <- as.factor( ceg$Tipo_escuela )
 
 names(ceg)
@@ -18,8 +19,40 @@ names(ceg)
 modelo1  <- lm(Calificacion ~ conjunto_atencion, data=ceg)
 summary(modelo1)
 modelo2  <- lm(Calificacion ~ conjunto_atencion + Tipo_escuela + conjunto_atencion:Tipo_escuela, data=ceg)
+modelo2  <- lm(Calificacion ~ CE_condistractibilidad * Tipo_escuela , data=ceg)
 
 summary(modelo2)
+summary(modelo2)$coeff[4,"Pr(>|t|)"]
+
+remaining  <- ceg[ , -9]
+
+lapply(remaining, FUN)
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+library(purrr)
+??map
+library(dplyr)
+library(tibble)
+temper <- ceg  %>%
+dplyr::select(Nivel._actividad:conjunto_atencion)  %>%
+        tibble
+
+names(temper)
+output  <- map(temper , ~ coefficients(summary(lm(Calificacion ~ .x * Tipo_escuela, data=ceg))))
+output  <- map(temper , ~ coefficients(summary(lm(Calificacion ~ .x * Tipo_escuela, data=ceg))))
+
+moderators()  <- function(argument, threshold){
+modelo2  <- lm(Calificacion ~ argument * Tipo_escuela, data=ceg)
+pvalue  <- coefficients(summary(modelo2))[4, "Pr(>|t|)"]) 
+if(pvalue <= threshold) return(pvalue)
+}
+
+?function
+moderators(temper, 0.05)
 
 plot(ceg$Atencion_foc, ceg$Calificacion)
 
