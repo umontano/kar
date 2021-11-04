@@ -10,9 +10,7 @@ library(knitr)
 ```
 
 ```{r}
-library(purrr)
 library(dplyr)
-library(tibble)
 
 #ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
 ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/ceguera_mafer.csv")
@@ -20,18 +18,27 @@ ceg$Tipo_escuela  <- as.factor( ceg$Tipo_escuela )
 ceg$Sexo  <- as.factor( ceg$Sexo )
 
 temper <- ceg  %>%
-dplyr::select(Nivel._actividad:CE_sindistractibilidad)  %>%
-        tibble
+dplyr::select(Nivel._actividad : CE_sindistractibilidad)
 
 
 moderators  <- function(argument, threshold){
-modelo2  <- lm(Calificacion ~ argument * Sexo, data=ceg)
+modelo2  <- lm(Calificacion ~ 0 + argument * Sexo, data=ceg)
 pvalue  <- coefficients(summary(modelo2))[4, "Pr(>|t|)"] 
-#print(pvalue)
 if(pvalue <= threshold) return(coefficients(summary(modelo2)))
 }
 
-map(temper, ~ moderators(.x, 0.05))
 
+# LIST OF ANALYSIS FOR ALL TEMPERAMENT VARIABLES
+lapply(temper, moderators, 0.05)
+
+```
+
+
+# POST-HOC ANALYSIS, FRUSTRATION VARIABLE
+```{r}
+coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==0&Tipo_escuela==0)))
+coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_escuela==0)))
+coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==0&Tipo_escuela==1)))
+coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_escuela==1)))
 ```
 
