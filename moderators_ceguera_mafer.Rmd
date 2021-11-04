@@ -1,0 +1,53 @@
+---
+title: "Calif Plots"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+```
+
+```{r}
+#ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/cegu.csv")
+ceg  <- read.csv( "https://raw.githubusercontent.com/umontano/kar/master/ceguera_mafer.csv")
+ceg$Tipo_escuela  <- as.factor( ceg$Tipo_escuela )
+
+library(purrr)
+library(dplyr)
+library(tibble)
+
+temper <- ceg  %>%
+dplyr::select(Nivel._actividad:conjunto_atencion)  %>%
+        tibble
+
+
+moderators  <- function(argument, threshold){
+modelo2  <- lm(Calificacion ~ argument * Sexo, data=ceg)
+pvalue  <- coefficients(summary(modelo2))[4, "Pr(>|t|)"] 
+#print(pvalue)
+if(pvalue <= threshold) return(pvalue)
+}
+
+library(purrr)
+map(temper, ~ moderators(.x, 0.05))
+
+plot(ceg$Atencion_foc, ceg$Calificacion)
+
+library(ggplot2)
+ggplot(ceg, aes(Atencion_foc, Calificacion
+                , col=as.factor(Sexo)
+                )) +
+        geom_jitter(alpha=0.5) +
+        geom_smooth(method = "lm", se = T, fullrange = T)
+
+
+library(ggbeeswarm)
+ggplot(ceg, aes(Sexo, Calificacion
+                )) +
+        geom_beeswarm(alpha=0.6) +
+        geom_smooth(method = "lm", se = T, fullrange = T)
+
+```
+
