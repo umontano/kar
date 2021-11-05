@@ -1,5 +1,5 @@
 ---
-title: "Calif Plots"
+title: "Moderators"
 output:
   html_document:
     df_print: paged
@@ -40,5 +40,16 @@ coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==0&Tipo_
 coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_escuela==0)))
 coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==0&Tipo_escuela==1)))
 coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_escuela==1)))
+
+
+names(ceg)
+
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==0&Tipo_escuela==0)))
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==1&Tipo_escuela==0)))
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==0&Tipo_escuela==1)))
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==1&Tipo_escuela==1)))
+
+
+
 ```
 
