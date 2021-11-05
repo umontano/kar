@@ -34,7 +34,7 @@ lapply(temper, moderators, 0.05)
 ```
 
 
-# POST-HOC ANALYSIS, FRUSTRATION VARIABLE
+# POST-HOC ANALYSIS, FRUSTRATION, AUTOTRANQUILIZACION
 ```{r}
 coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==0&Tipo_escuela==0)))
 coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_escuela==0)))
