@@ -44,10 +44,12 @@ coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg, subset=Sexo==1&Tipo_
 
 names(ceg)
 
-coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==0&Tipo_escuela==0)))
-coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==1&Tipo_escuela==0)))
-coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==0&Tipo_escuela==1)))
-coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg, subset=Sexo==1&Tipo_escuela==1)))
+
+coefficients(summary(lm(Calificacion ~ Frustracion -1, ceg )))
+coefficients(summary(lm(Calificacion ~ Frustracion:Tipo_escuela : Sexo  -1, ceg )))
+
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion -1, ceg )))
+coefficients(summary(lm(Calificacion ~ Autotranquilizacion:Tipo_escuela : Sexo  -1, ceg )))
 
 
 
