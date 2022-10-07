@@ -73,7 +73,10 @@ print(which(column_outlaieree %in% outlaiers))
 column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
 print(which(column_outlaieree %in% outlaiers))
 column_outlaieree <- fill_outlaiers(column_outlaieree)
+	nooutlaiers <- length(boxplot.stats(column_outlaieree)$out) > 0
 	}
+boolean_evaluation <-
+	
 i <- i+1
 }
 
