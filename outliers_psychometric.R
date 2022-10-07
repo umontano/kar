@@ -72,25 +72,16 @@ for(column_outlaieree in items) {
 print(which(column_outlaieree %in% outlaiers))
 column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
 print(which(column_outlaieree %in% outlaiers))
+fill_outlaiers <- function(oooo) return(oooo)
 column_outlaieree <- fill_outlaiers(column_outlaieree)
-	nooutlaiers <- length(boxplot.stats(column_outlaieree)$out) > 0
-	}
-boolean_evaluation <-
-	
+#Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
+boolean_evaluation <- length(boxplot.stats(column_outlaieree)$out) > 0
 i <- i+1
 }
 
-out_ind <- 
-which(column_outlaieree %in% c(out))
-out_ind
-
-qmax <- '3rd Qu.' + interval 
 summary(column_outlaieree)['3rd Qu.']
 summary(column_outlaieree)['1st Qu.']
-interval <- 1.5*IQR(column_outlaieree)
- - attr(*, "names")= chr [1:6] "Min." "1st Qu." "Median" "Mean" ...
-qmax <- '3rd Qu.' + interval 
-qmin <- '1st Qu.' - interval 
+interval <- 0.5*IQR(column_outlaieree)
 median(items$cbq2)
 mean(items$cbq2)
 sd(items$cbq2)
