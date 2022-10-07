@@ -58,30 +58,32 @@ if(require(lavaan) && require(psych)) {
   }
    
 
-outlieree_column <- items$cbq190
+column_outlaieree <- items$cbq190
 
 
 
 i <- 1
-for(outlieree_column in items) {
-	if(length(boxplot.stats(outlieree_column)$out) > 1) {
+for(column_outlaieree in items) {
+	if(length(boxplot.stats(column_outlaieree)$out) > 1) {
 		print(i)
 		print('========')
-		print(boxplot.stats(outlieree_column)$out)
-		outlaiers <- boxplot.stats(outlieree_column)$out
-print(which(outlieree_column %in% outlaiers))
+		print(boxplot.stats(column_outlaieree)$out)
+		outlaiers <- boxplot.stats(column_outlaieree)$out
+print(which(column_outlaieree %in% outlaiers))
+column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
+print(which(column_outlaieree %in% outlaiers))
 	}
 i <- i+1
 }
 
 out_ind <- 
-which(outlieree_column %in% c(out))
+which(column_outlaieree %in% c(out))
 out_ind
 
 qmax <- '3rd Qu.' + interval 
-summary(outlieree_column)['3rd Qu.']
-summary(outlieree_column)['1st Qu.']
-interval <- 1.5*IQR(outlieree_column)
+summary(column_outlaieree)['3rd Qu.']
+summary(column_outlaieree)['1st Qu.']
+interval <- 1.5*IQR(column_outlaieree)
  - attr(*, "names")= chr [1:6] "Min." "1st Qu." "Median" "Mean" ...
 qmax <- '3rd Qu.' + interval 
 qmin <- '1st Qu.' - interval 
