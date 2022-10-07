@@ -72,6 +72,7 @@ for(column_outlaieree in items) {
 print(which(column_outlaieree %in% outlaiers))
 column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
 print(which(column_outlaieree %in% outlaiers))
+column_outlaieree <- fill_outlaiers(column_outlaieree)
 	}
 i <- i+1
 }
