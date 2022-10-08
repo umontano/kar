@@ -65,14 +65,9 @@ column_outlaieree <- items$cbq190
 for(iteration_dataset in 1:20) {
 	i <- 1
 	for(column_outlaieree in items) {
-            if(length(boxplot.stats(column_outlaieree)$out) > 1) {
-                print(i)
-                print('========')
-                print(boxplot.stats(column_outlaieree)$out)
-                outlaiers <- boxplot.stats(column_outlaieree)$out
-        print(which(column_outlaieree %in% outlaiers))
-        column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
-        print(which(column_outlaieree %in% outlaiers))
+        for(iteration_column in 1:20) {
+            outlaiers <- boxplot.stats(column_outlaieree)$out
+            column_outlaieree[which(column_outlaieree %in% outlaiers))] <- NA
         fill_outlaiers <- function(oooo) return(oooo)
         column_outlaieree <- fill_outlaiers(column_outlaieree)
 
@@ -80,10 +75,17 @@ for(iteration_dataset in 1:20) {
         #Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
         boolean_evaluation <- length(boxplot.stats(column_outlaieree)$out) > 0
         i <- i+1
-        }
+            if(length(boxplot.stats(column_outlaieree)$out) > 1) {
+                print(i)
+                print('========')
+                print(boxplot.stats(column_outlaieree)$out)
+                print(which(column_outlaieree %in% outlaiers))
+                print(which(column_outlaieree %in% outlaiers))
+            }
         if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
-
     }
+
+}
 
 summary(column_outlaieree)['3rd Qu.']
 summary(column_outlaieree)['1st Qu.']
