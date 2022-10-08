@@ -1,30 +1,5 @@
 #==========================================
 #==========================================
-generate_test_psych_fa_to_lavaan_cfa <-function(nnnn) {
-	if(file.exists(paste0('xxxx.', nnnn))) next
-  file_name_output_shortened_spec  <- paste0(date_time, nnnn, 'efa2cfa_spec.txt')
-                print(paste0('Cumulative Var =ITER=N== ', nnnn))
-                print(paste0('Factor3 0. =ITER=N== ', nnnn))
-  #print(fit_psych_fa_varimax, sort=TRUE)
-  #print(fit_psych_fa_promax, sort=TRUE)
-  efa_spec <- parameters::efa_to_cfa(fit_psych_fa, threshold=nnnn)
-  writeLines(efa_spec, file_name_output_shortened_spec)
-
-	fit_lavaan_cfa <- summary(lavaan::cfa(efa_spec, data=multiappended_dataset, std.lv=TRUE, estimator='WLSMV'), fit.measures=TRUE)
-  fit_measure <- fit_lavaan_cfa$fit[['cfi']]
-  tucker_lewis_index <- fit_lavaan_cfa$fit[['tli']]
-  
-  print(paste0('COMPARATIVE FIT INDEX ', fit_measure))
-  print(fit_measure)
-  print(paste0('TUCKER LEWIS INDEX _________ ', tucker_lewis_index))
-  print(tucker_lewis_index        )
-
-  writeLines(as.character(nnnn), paste0('xxxx.', nnnn))
-  return(efa_spec)
-  }
-
-#==========================================
-#==========================================
 reappend_dataset_multiple_times <- function(ntimes, appendee_dataset) {
 multiappended_dataset <<- rbind(multiappended_dataset, appendee_dataset[
 sample(nrow(items))
@@ -47,17 +22,7 @@ set.seed(1111)
 
 
 date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
-if(require(lavaan) && require(psych)) {
-  #fit_psych_fa_varimax <- psych::fa(items, nfactors=3, rotate='varimax', fm='minres')
-  #fit_psych_fa_promax  <- psych::fa(items, nfactors=3, rotate='promax', fm='minres')
-  fit_psych_fa <- psych::fa(items, nfactors=3, rotate='promax', fm='wls')
-  print(fit_psych_fa, sort=TRUE)
-  #efa_psych_specs_list  <- lapply(3:23, generate_test_psych_fa_to_lavaan_cfa)
-  efa_psych_specs_list  <- lapply(24:59, generate_test_psych_fa_to_lavaan_cfa)
-  }
-   
 
-column_outlaieree <- items$cbq190
 
 
 #Loop identify outlaiers and place NA 
