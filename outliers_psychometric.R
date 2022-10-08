@@ -84,7 +84,6 @@ for(iteration_dataset in 1:20) {
             }
         if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
     }
-
 }
 
 summary(column_outlaieree)['3rd Qu.']
