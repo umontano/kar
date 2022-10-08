@@ -38,7 +38,6 @@ items <- read.csv('imputed_items_valkarmfs.csv', header=TRUE)
  # factors <- read.csv('imputed_broad_dimensions_valkarmfs.csv', header=TRUE)[, -1]
 items[ , c('X', 'cbq3')] <- list(NULL)
 items[] <- lapply(items, as.numeric)
-initial_fit_efa_factanal <- generate_new_fit_efa_factanal(analyzee_dataset=items, number_of_factors=3)
 
 #Join multiple times the same dataframe
 #Initialize
