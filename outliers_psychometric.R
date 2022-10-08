@@ -89,11 +89,6 @@ for(iteration_dataset in 1:20) {
 summary(column_outlaieree)['3rd Qu.']
 summary(column_outlaieree)['1st Qu.']
 interval <- 0.5*IQR(column_outlaieree)
-median(items$cbq2)
-mean(items$cbq2)
-sd(items$cbq2)
-str(summary(items$cbq2))
-sd(items)
 
 
 #Original block to see outs, with a slice
