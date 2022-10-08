@@ -90,9 +90,9 @@ sd(items)
 
 
 #Original block to see outs, with a slice
-items <- items[,74:76]
+sliceditems <- items[,74:76]
 i <- 1
-for(outlieree_column in items) {
+for(outlieree_column in sliceditems) {
 	if(length(boxplot.stats(outlieree_column)$out) > 1) {
 		print(i)
 		print('========')
