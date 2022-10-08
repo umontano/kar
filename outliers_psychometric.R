@@ -81,6 +81,8 @@ for(pass in 1:20) {
 	boolean_evaluation <- length(boxplot.stats(column_outlaieree)$out) > 0
 	i <- i+1
 	}
+	if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
+
 }
 
 summary(column_outlaieree)['3rd Qu.']
