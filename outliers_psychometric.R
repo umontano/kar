@@ -43,7 +43,7 @@ items[] <- lapply(items, as.numeric)
 #Initialize
 multiappended_dataset <- items
 set.seed(1111)
-lapply(1:9, reappend_dataset_multiple_times, appendee_dataset=items)
+#lapply(1:9, reappend_dataset_multiple_times, appendee_dataset=items)
 
 
 date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
