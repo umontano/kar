@@ -34,8 +34,8 @@ print(ntimes)
 
 
 items <- read.csv('imputed_items_valkarmfs.csv', header=TRUE)
-scales <- read.csv('imputed_scales_valkarmfs.csv', header=TRUE)[, -1]
-factors <- read.csv('imputed_broad_dimensions_valkarmfs.csv', header=TRUE)[, -1]
+ # scales <- read.csv('imputed_scales_valkarmfs.csv', header=TRUE)[, -1]
+ # factors <- read.csv('imputed_broad_dimensions_valkarmfs.csv', header=TRUE)[, -1]
 items[ , c('X', 'cbq3')] <- list(NULL)
 items[] <- lapply(items, as.numeric)
 initial_fit_efa_factanal <- generate_new_fit_efa_factanal(analyzee_dataset=items, number_of_factors=3)
@@ -88,3 +88,17 @@ sd(items$cbq2)
 str(summary(items$cbq2))
 sd(items)
 
+
+#Original block to see outs, with a slice
+items <- items[,74:76]
+i <- 1
+for(outlieree_column in items) {
+	if(length(boxplot.stats(outlieree_column)$out) > 1) {
+		print(i)
+		print('========')
+		print(boxplot.stats(outlieree_column)$out)
+		outlaiers <- boxplot.stats(outlieree_column)$out
+print(which(outlieree_column %in% outlaiers))
+	}
+i <- i+1
+}
