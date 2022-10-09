@@ -28,10 +28,10 @@ date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
     #Function to clean-up outlaiers
 #==========================================
 place_na_in_otlaiers <- function(column_outlaieree) {
-        for(iteration_column in 1:2) {
+        for(iteration_column in 1:10) {
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
-            if(! length(boxplot.stats(column_outlaieree)$out) > 0) break else print(paste0('==A COLUMN ITER=== ', iteration_column, '\n ', as.character(which(column_outlaieree %in% outlaiers))))
+            if(! length(boxplot.stats(column_outlaieree)$out) > 0) break else print(paste0('==A COLUMN ITER=== ', iteration_column, '\\n ', as.character(which(column_outlaieree %in% outlaiers))))
         }
 	return(column_outlaieree)
 }
@@ -51,12 +51,12 @@ check_is_cleaned <- function(column_outlaieree) {
 #Loop identify outlaiers and place NA 
 #==========================================
 identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
-	for(iteration_dataset in 1:2) {
+	for(iteration_dataset in 1:10) {
 	    outlaieree_dataset <- data.frame(lapply(outlaieree_dataset, place_na_in_otlaiers))
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
 	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_dataset))
 	}
-	if(iteration_dataset > 1) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
+	if(iteration_dataset > 9) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
 	write.csv(outlaieree_dataset, '~/b/xOUTLAIERS_CLEANED_ITEMS.csv')
 	return(outlaieree_dataset)
 }
