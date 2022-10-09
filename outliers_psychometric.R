@@ -52,6 +52,7 @@ check_is_cleaned <- function(column_outlaieree) {
 #==========================================
 identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	for(iteration_dataset in 1:10) {
+		print(paste0(iteration_dataset, '===ITER WHOLE DATASET======'))
 	    outlaieree_dataset <- data.frame(lapply(outlaieree_dataset, place_na_in_otlaiers))
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
 	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_dataset))
