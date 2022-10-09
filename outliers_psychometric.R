@@ -28,7 +28,7 @@ date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
 #==========================================
     #Function to clean-up outlaiers
 #==========================================
-    place_na_in_otlaiers <- function(column_outlaieree) {
+place_na_in_otlaiers <- function(column_outlaieree) {
         for(iteration_column in 1:10) {
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
@@ -38,20 +38,30 @@ date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
                     print(paste0('========', iteration_column))
                     print(which(column_outlaieree %in% outlaiers))
                 }
-        if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
+            if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
         }
-    }
+        return(column_outlaieree)
+}
 #==========================================
 #==========================================
 
 
-
-
 #==========================================
+#FUNTIONTO CONSTRUCT A VECTOR OF BOOLENA VALUES INDICATION IF EACH COLUM HAS OUTLAIERS
+#Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
+#==========================================
+check_is_cleaned <- function(column_outlaieree) {
+    return(! length(boxplot.stats(column_outlaieree)$out) > 0)
+}
+
 #==========================================
 #Loop identify outlaiers and place NA 
+#==========================================
 for(iteration_dataset in 1:20) {
     items[] <- lapply(items, place_na_in_otlaiers)
+    checked_out_cleaned_vector <- lapply(items, check_is_cleaned)
+    write.csv(items, 'xOUTLAIERS_CLEANED_ITEMS.csv')
+    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEAED ========', iteration_dataset)); break
 }
 
 summary(column_outlaieree)['3rd Qu.']
