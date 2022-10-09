@@ -10,7 +10,7 @@ print(ntimes)
 
 #==========================================
 #==========================================
-items <- read.csv('imputed_items_valkarmfs.csv', header=TRUE)
+items <- read.csv('https://raw.githubusercontent.com/umontano/kar/master/imputed_items_valkarmfs.csv', header=TRUE)
  # scales <- read.csv('imputed_scales_valkarmfs.csv', header=TRUE)[, -1]
  # factors <- read.csv('imputed_broad_dimensions_valkarmfs.csv', header=TRUE)[, -1]
 items[ , c('X', 'cbq3')] <- list(NULL)
@@ -29,7 +29,7 @@ date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
     #Function to clean-up outlaiers
 #==========================================
 place_na_in_otlaiers <- function(column_outlaieree) {
-        for(iteration_column in 1:10) {
+        for(iteration_column in 1:2) {
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
             #Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
@@ -58,7 +58,7 @@ check_is_cleaned <- function(column_outlaieree) {
 #Loop identify outlaiers and place NA 
 #==========================================
 identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
-	for(iteration_dataset in 1:20) {
+	for(iteration_dataset in 1:2) {
 	    outlaieree_dataset[] <- lapply(outlaieree_dataset, place_na_in_otlaiers)
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
 	    write.csv(outlaieree_dataset, '~/xOUTLAIERS_CLEANED_ITEMS.csv')
