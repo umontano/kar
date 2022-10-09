@@ -62,7 +62,7 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	    outlaieree_dataset[] <- lapply(outlaieree_dataset, place_na_in_otlaiers)
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
 	    write.csv(outlaieree_dataset, '~/xOUTLAIERS_CLEANED_ITEMS.csv')
-	    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEAED ========', iteration_dataset)); break
+	    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEANED ========', iteration_dataset)); break
 	}
 if(iteration_dataset > 19) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
 return(outlaieree_dataset)
@@ -76,21 +76,24 @@ summary(column_outlaieree)['1st Qu.']
 interval <- 0.5*IQR(column_outlaieree)
 
 
-#Original block to see outs, with a slice
-sliceditems <- items[,74:76]
-i <- 1
-for(outlieree_column in sliceditems) {
-	if(length(boxplot.stats(outlieree_column)$out) > 1) {
-		print('========')
-		print(i)
-		print('========')
-		print(boxplot.stats(outlieree_column)$out)
-		outlaiers <- boxplot.stats(outlieree_column)$out
-print(which(outlieree_column %in% outlaiers))
+#Original test block to see outs, with a slice
+test_block <- function() {
+	sliceditems <- items[,74:76]
+	i <- 1
+	for(outlieree_column in sliceditems) {
+		if(length(boxplot.stats(outlieree_column)$out) > 1) {
+			print('========')
+			print(i)
+			print('========')
+			print(boxplot.stats(outlieree_column)$out)
+			outlaiers <- boxplot.stats(outlieree_column)$out
+	print(which(outlieree_column %in% outlaiers))
+		}
+	i <- i+1
 	}
-i <- i+1
 }
 
 
 
 items <- lapply(items, identify_and_make_na_outlaiers)
+test_block()
