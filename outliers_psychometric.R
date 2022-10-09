@@ -52,9 +52,9 @@ check_is_cleaned <- function(column_outlaieree) {
 #==========================================
 identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	for(iteration_dataset in 1:2) {
-	    outlaieree_dataset[] <- lapply(outlaieree_dataset, place_na_in_otlaiers)
+	    outlaieree_dataset <- data.frame(lapply(outlaieree_dataset, place_na_in_otlaiers))
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
-	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANED ========', iteration_dataset)); break
+	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_dataset))
 	}
 	if(iteration_dataset > 1) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
 	write.csv(outlaieree_dataset, '~/b/xOUTLAIERS_CLEANED_ITEMS.csv')
@@ -87,6 +87,5 @@ test_block <- function() {
 }
 
 
-
-items <- lapply(items, identify_and_make_na_outlaiers)
-test_block()
+identify_and_make_na_outlaiers(items)
+#test_block()
