@@ -87,5 +87,5 @@ test_block <- function() {
 }
 
 
-identify_and_make_na_outlaiers(items)
-#test_block()
+items <- identify_and_make_na_outlaiers(items)
+test_block()
