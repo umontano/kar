@@ -18,12 +18,11 @@ items[] <- lapply(items, as.numeric)
 
 #Join multiple times the same dataframe
 #Initialize
-multiappended_dataset <- items
-set.seed(1111)
-#lapply(1:9, reappend_dataset_multiple_times, appendee_dataset=items)
+# # multiappended_dataset <- items
+# # set.seed(1111)
+# # lapply(1:9, reappend_dataset_multiple_times, appendee_dataset=items)
 
 date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
-
 
 #==========================================
     #Function to clean-up outlaiers
@@ -32,13 +31,10 @@ place_na_in_otlaiers <- function(column_outlaieree) {
         for(iteration_column in 1:2) {
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
-            #Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
-            #boolean_evaluation <- length(boxplot.stats(column_outlaieree)$out) > 0
                 if(length(boxplot.stats(column_outlaieree)$out) > 0) {
-                    print(paste0('========', iteration_column))
-                    print(which(column_outlaieree %in% outlaiers))
-                }
-            if(! length(boxplot.stats(column_outlaieree)$out) > 1) break
+                    print(paste0('========', iteration_column, '\n ', as.character(which(column_outlaieree %in% outlaiers))))
+			}
+            if(! length(boxplot.stats(column_outlaieree)$out) > 0) break
         }
         return(column_outlaieree)
 }
