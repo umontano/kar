@@ -34,7 +34,7 @@ place_na_in_otlaiers <- function(column_outlaieree) {
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
             #Creates a boolean value checking if there is still outlaiers after being removed, so tgat it can be evaluated
             #boolean_evaluation <- length(boxplot.stats(column_outlaieree)$out) > 0
-                if(length(boxplot.stats(column_outlaieree)$out) > 1) {
+                if(length(boxplot.stats(column_outlaieree)$out) > 0) {
                     print(paste0('========', iteration_column))
                     print(which(column_outlaieree %in% outlaiers))
                 }
