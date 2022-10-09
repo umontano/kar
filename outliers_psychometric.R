@@ -31,12 +31,9 @@ place_na_in_otlaiers <- function(column_outlaieree) {
         for(iteration_column in 1:2) {
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
-                if(length(boxplot.stats(column_outlaieree)$out) > 0) {
-                    print(paste0('========', iteration_column, '\n ', as.character(which(column_outlaieree %in% outlaiers))))
-			}
-            if(! length(boxplot.stats(column_outlaieree)$out) > 0) break
+            if(! length(boxplot.stats(column_outlaieree)$out) > 0) break else print(paste0('==A COLUMN ITER=== ', iteration_column, '\n ', as.character(which(column_outlaieree %in% outlaiers))))
         }
-        return(column_outlaieree)
+	return(column_outlaieree)
 }
 #==========================================
 #==========================================
@@ -57,11 +54,11 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	for(iteration_dataset in 1:2) {
 	    outlaieree_dataset[] <- lapply(outlaieree_dataset, place_na_in_otlaiers)
 	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
-	    write.csv(outlaieree_dataset, '~/xOUTLAIERS_CLEANED_ITEMS.csv')
-	    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEANED ========', iteration_dataset)); break
+	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANED ========', iteration_dataset)); break
 	}
-if(iteration_dataset > 19) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
-return(outlaieree_dataset)
+	if(iteration_dataset > 1) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
+	write.csv(outlaieree_dataset, '~/b/xOUTLAIERS_CLEANED_ITEMS.csv')
+	return(outlaieree_dataset)
 }
 
 
