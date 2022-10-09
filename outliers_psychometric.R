@@ -57,12 +57,19 @@ check_is_cleaned <- function(column_outlaieree) {
 #==========================================
 #Loop identify outlaiers and place NA 
 #==========================================
-for(iteration_dataset in 1:20) {
-    items[] <- lapply(items, place_na_in_otlaiers)
-    checked_out_cleaned_vector <- lapply(items, check_is_cleaned)
-    write.csv(items, 'xOUTLAIERS_CLEANED_ITEMS.csv')
-    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEAED ========', iteration_dataset)); break
+identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
+	for(iteration_dataset in 1:20) {
+	    outlaieree_dataset[] <- lapply(outlaieree_dataset, place_na_in_otlaiers)
+	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
+	    write.csv(outlaieree_dataset, '~/xOUTLAIERS_CLEANED_ITEMS.csv')
+	    if(all(checked_out_cleaned_vector)) print(paste0('===== CLEAED ========', iteration_dataset)); break
+	}
+if(iteration_dataset > 19) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
+return(outlaieree_dataset)
 }
+
+
+
 
 summary(column_outlaieree)['3rd Qu.']
 summary(column_outlaieree)['1st Qu.']
@@ -83,3 +90,7 @@ print(which(outlieree_column %in% outlaiers))
 	}
 i <- i+1
 }
+
+
+
+items <- lapply(items, identify_and_make_na_outlaiers)
