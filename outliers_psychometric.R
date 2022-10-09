@@ -29,6 +29,7 @@ date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
 #==========================================
 place_na_in_otlaiers <- function(column_outlaieree) {
         for(iteration_column in 1:10) {
+		print(paste0(iteration_column, '===ITER COLUM======'))
             outlaiers <- boxplot.stats(column_outlaieree)$out
             column_outlaieree[which(column_outlaieree %in% outlaiers)] <- NA
             if(! length(boxplot.stats(column_outlaieree)$out) > 0) break else print(paste0('==A COLUMN ITER=== ', iteration_column, '\\n ', as.character(which(column_outlaieree %in% outlaiers))))
