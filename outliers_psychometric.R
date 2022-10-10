@@ -86,6 +86,14 @@ test_block <- function() {
 }
 
 
+
+
+#==========================================
+#==========================================
+#items <- identify_and_make_na_outlaiers(items)
+#test_block()
+
+
 #==========================================
 #SIN INVERTIDOS
 #OUTLAIERS NA AND THEN IMPUTES
@@ -132,9 +140,3 @@ compute_reversed_scales_factors()
 #
 }
 
-
-
-#==========================================
-#==========================================
-#items <- identify_and_make_na_outlaiers(items)
-#test_block()
