@@ -55,7 +55,7 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	for(iteration_dataset in 1:10) {
 		print(paste0(iteration_dataset, '===ITER WHOLE DATASET======'))
 	    outlaieree_dataset <- data.frame(lapply(outlaieree_dataset, place_na_in_otlaiers))
-	    checked_out_cleaned_vector <- lapply(outlaieree_dataset, check_is_cleaned)
+	    checked_out_cleaned_vector <- unlist(lapply(outlaieree_dataset, check_is_cleaned))
 	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_dataset))
 	}
 	if(iteration_dataset > 9) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
@@ -92,8 +92,12 @@ test_block <- function() {
 outlaiers_before_impute <- function(url_or_file) {
 #LOAD()
 for(iteration_imputation in 1:10) {
-items <- identify_and_make_na_outlaiers(items)
-#IMPUTE()
+	items <- identify_and_make_na_outlaiers(items)
+	#IMPUTE()
+	#check there are not outs left and  stop the loop
+	checked_out_cleaned_vector <- unlist(lapply(items, check_is_cleaned))
+    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_imputation))
+
 }
 #Remaining of the original impute fvgunction
 #
