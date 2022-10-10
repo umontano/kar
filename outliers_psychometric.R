@@ -105,7 +105,7 @@ for(iteration_imputation in 1:10) {
 }
 #
 
-items <- identify_and_make_na_outlaiers(items)
-test_block()
+#items <- identify_and_make_na_outlaiers(items)
+#test_block()
 
 
