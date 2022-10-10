@@ -88,6 +88,19 @@ test_block <- function() {
 	}
 }
 
+#==========================================
+outlaiers_before_impute <- function(url_or_file) {
+#LOAD()
+for(iteration_imputation in 1:10) {
+items <- identify_and_make_na_outlaiers(items)
+#IMPUTE()
+}
+#Remaining of the original impute fvgunction
+#
+}
+#
 
 items <- identify_and_make_na_outlaiers(items)
 test_block()
+
+
