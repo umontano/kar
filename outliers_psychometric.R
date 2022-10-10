@@ -1,4 +1,5 @@
 #==========================================
+#TO MAKE THE DATABASE MULTIPLE TIMES LONGER BY ROWBINDING THE SAME DATASET VIA RESSMPLE WITHPUT REPLACEMENT
 #==========================================
 reappend_dataset_multiple_times <- function(ntimes, appendee_dataset) {
 multiappended_dataset <<- rbind(multiappended_dataset, appendee_dataset[
@@ -9,6 +10,7 @@ print(ntimes)
 
 
 #==========================================
+#INITIAL LOAD FILES
 #==========================================
 items <- read.csv('https://raw.githubusercontent.com/umontano/kar/master/imputed_items_valkarmfs.csv', header=TRUE)
  # scales <- read.csv('imputed_scales_valkarmfs.csv', header=TRUE)[, -1]
@@ -49,7 +51,7 @@ check_is_cleaned <- function(column_outlaieree) {
 }
 
 #==========================================
-#Loop identify outlaiers and place NA 
+#Loop to identify outlaiers and place NA 
 #==========================================
 identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	for(iteration_dataset in 1:10) {
@@ -64,11 +66,6 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 }
 
 
-
-
-summary(column_outlaieree)['3rd Qu.']
-summary(column_outlaieree)['1st Qu.']
-interval <- 0.5*IQR(column_outlaieree)
 
 
 #Original test block to see outs, with a slice
@@ -88,6 +85,10 @@ test_block <- function() {
 	}
 }
 
+
+#==========================================
+#IN MAKING THE ORIGINAL CBQ CALCULATION IT MAKES OUTLAIERS NA AND THEN IMPUTES, STOPINGG THE LOOP WHRE THERE ARE NO OUTL ANY MORE
+#==========================================
 #==========================================
 outlaiers_before_impute <- function(url_or_file) {
 #LOAD()
