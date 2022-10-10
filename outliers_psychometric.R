@@ -87,11 +87,14 @@ test_block <- function() {
 
 
 #==========================================
+#SIN INVERTIDOS
 #IN MAKING THE ORIGINAL CBQ CALCULATION IT MAKES OUTLAIERS NA AND THEN IMPUTES, STOPINGG THE LOOP WHRE THERE ARE NO OUTL ANY MORE
 #==========================================
 #==========================================
-outlaiers_before_impute <- function(url_or_file) {
+sin_invertidos_outlaiers_before_impute <- function(url_or_file) {
 #LOAD()
+create_datasets('https://raw.githubusercontent.com/Laboratorio-CHyC/Temperament/main/cbqLab_serrano2022.csv')
+#LOOP OUTLS IMPUTE
 for(iteration_imputation in 1:10) {
 	items <- identify_and_make_na_outlaiers(items)
 	#IMPUTE()
@@ -101,6 +104,9 @@ for(iteration_imputation in 1:10) {
 
 }
 #Remaining of the original impute fvgunction
+mice_imputation_items (maximum_iterations)
+generate_unreversed_items()
+compute_reversed_scales_factors()
 #
 }
 #
@@ -109,3 +115,8 @@ for(iteration_imputation in 1:10) {
 #test_block()
 
 
+#==========================================
+#CLEAN OUTLS AND IMPUTE BEFORE MAKING CBQ COMPUTATION
+#==========================================
+imputed_sin_invertidos  <- function(maximum_iterations) {
+}
