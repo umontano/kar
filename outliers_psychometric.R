@@ -93,7 +93,7 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	    if(all(checked_out_cleaned_vector)) break else print(paste0('===== CLEANING ========', iteration_dataset))
 	}
 	if(iteration_dataset > 9) print(paste0(iteration_dataset, '== MAQXIMUM I REACHED =========='))
-	write.csv(outlaieree_dataset, '~/b/xOUTLAIERS_CLEANED_ITEMS.csv')
+	write.csv(outlaieree_dataset, 'xOUTLAIERS_CLEANED_ITEMS.csv')
 	return(outlaieree_dataset)
 }
 
