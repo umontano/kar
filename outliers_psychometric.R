@@ -26,6 +26,33 @@ items[] <- lapply(items, as.numeric)
 
 date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
 
+
+
+
+#Original test block to see outs, with a slice
+test_block <- function() {
+	sliceditems <- items[,74:76]
+	i <- 1
+	for(outlieree_column in sliceditems) {
+		if(length(boxplot.stats(outlieree_column)$out) > 1) {
+			print('========')
+			print(i)
+			print('========')
+			print(boxplot.stats(outlieree_column)$out)
+			outlaiers <- boxplot.stats(outlieree_column)$out
+	print(which(outlieree_column %in% outlaiers))
+		}
+	i <- i+1
+	}
+}
+
+
+#==========================================
+#==========================================
+#items <- identify_and_make_na_outlaiers(items)
+#test_block()
+
+
 #==========================================
     #Function to clean-up outlaiers
 #==========================================
@@ -64,35 +91,6 @@ identify_and_make_na_outlaiers <- function(outlaieree_dataset) {
 	write.csv(outlaieree_dataset, '~/b/xOUTLAIERS_CLEANED_ITEMS.csv')
 	return(outlaieree_dataset)
 }
-
-
-
-
-#Original test block to see outs, with a slice
-test_block <- function() {
-	sliceditems <- items[,74:76]
-	i <- 1
-	for(outlieree_column in sliceditems) {
-		if(length(boxplot.stats(outlieree_column)$out) > 1) {
-			print('========')
-			print(i)
-			print('========')
-			print(boxplot.stats(outlieree_column)$out)
-			outlaiers <- boxplot.stats(outlieree_column)$out
-	print(which(outlieree_column %in% outlaiers))
-		}
-	i <- i+1
-	}
-}
-
-
-
-
-#==========================================
-#==========================================
-#items <- identify_and_make_na_outlaiers(items)
-#test_block()
-
 
 #==========================================
 #SIN INVERTIDOS
