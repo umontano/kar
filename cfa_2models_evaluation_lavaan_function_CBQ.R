@@ -204,8 +204,9 @@ specification_scales <- input_disk_spec
 cfaee_estimator <- 'MML'
 
 model_scales <- cfa(specification_scales
-		, sample.cov = cmatrix
-		, sample.nobs = 999
+		    , data = items
+		#, sample.cov = cmatrix
+		#, sample.nobs = 999
 		#, estimator=cfaee_estimator
 		#, check.gradient = FALSE
 		#, std.lv=TRUE
