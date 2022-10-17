@@ -1,0 +1,15 @@
+    act =~ cbq1 + cbq25 + cbq41 + cbq48 + cbq88 + cbq102 + cbq123 + cbq126 + cbq145 + cbq153 + cbq172 + cbq187 + cbq192
+    fru =~ cbq2 + cbq19 + cbq34 + cbq62 + cbq73 + cbq78 + cbq120 + cbq128 + cbq140 + cbq156 + cbq173 + cbq181 + cbq193
+    app =~ cbq10 + cbq24 + cbq35 + cbq69 + cbq82 + cbq96 + cbq117 + cbq131 + cbq148 + cbq166 + cbq175 + cbq188 + cbq191
+    attcon =~ cbq16 + cbq38 + cbq47 + cbq125 + cbq144 + cbq160 + cbq171 + cbq186 + cbq195 + cbq6 + cbq29 + cbq95 + cbq180 + cbq184
+    dis =~ cbq5 + cbq21 + cbq61 + cbq87 + cbq97 + cbq101 + cbq115 + cbq132 + cbq141 + cbq157 + cbq178 + cbq190
+    sth =~ cbq14 + cbq27 + cbq42 + cbq53 + cbq68 + cbq85 + cbq92 + cbq103 + cbq118 + cbq134 + cbq150 + cbq167 + cbq177
+    fea =~ cbq15 + cbq40 + cbq50 + cbq58 + cbq70 + cbq80 + cbq91 + cbq130 + cbq138 + cbq161 + cbq176 + cbq189
+    hip =~ cbq8 + cbq22 + cbq30 + cbq51 + cbq60 + cbq67 + cbq77 + cbq100 + cbq107 + cbq124 + cbq139 + cbq159 + cbq182
+    imp =~ cbq13 + cbq26 + cbq46 + cbq59 + cbq71 + cbq79 + cbq90 + cbq104 + cbq114 + cbq137 + cbq155 + cbq169 + cbq183
+    inh =~ cbq4 + cbq20 + cbq32 + cbq63 + cbq75 + cbq93 + cbq108 + cbq116 + cbq136 + cbq147 + cbq162 + cbq168 + cbq185
+    lip =~ cbq12 + cbq36 + cbq54 + cbq66 + cbq76 + cbq86 + cbq111 + cbq113 + cbq133 + cbq146 + cbq151 + cbq164 + cbq174
+    per =~ cbq9 + cbq28 + cbq31 + cbq52 + cbq65 + cbq84 + cbq98 + cbq105 + cbq122 + cbq142 + cbq154 + cbq170
+    sad =~ cbq18 + cbq39 + cbq44 + cbq55 + cbq64 + cbq72 + cbq81 + cbq94 + cbq109 + cbq112 + cbq127 + cbq149
+    shy =~ cbq7 + cbq17 + cbq23 + cbq37 + cbq45 + cbq57 + cbq74 + cbq89 + cbq106 + cbq119 + cbq129 + cbq143 + cbq158
+    smi =~ cbq11 + cbq43 + cbq56 + cbq83 + cbq99 + cbq110 + cbq121 + cbq135 + cbq152 + cbq163 + cbq165 + cbq179 + cbq194
