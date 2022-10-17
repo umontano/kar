@@ -207,7 +207,7 @@ source('part3cfa_cbq.R')
 #xxxxCOVARIANCE
 #TEST WITH COVARIANCE MATRIX FROM OUTLAIERS CLEANES AND IMPUTED
 library(lavaan)
-items <- read.csv('~/p/psychometric/xCBQ_OUTL....')[, -1]
+items <- read.csv('imputed_items_valkarmfs.csv')[, -1]
 load('xCOVARIANCE_MATRIX_OUTLAIERS_IMPUTED.RData')
 input_disk_spec <- paste(readLines('scales_without_trailing_r.spec'), collapse='\n')
 specification_scales <- input_disk_spec
