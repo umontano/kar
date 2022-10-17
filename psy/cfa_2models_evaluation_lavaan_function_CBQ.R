@@ -51,7 +51,15 @@ smi =~ cbq11 + cbq43 + cbq56 + cbq83 + cbq99 + cbq110 + cbq121 + cbq135 + cbq152
 '
 specification_scales <- cfaee_spec
 #model_scales <- cfa(specification_scales, data=items, missing='ml.x', std.lv=TRUE)
-model_scales <- cfa(specification_scales, data=items, estimator=cfaee_estimator, check.gradient = FALSE, std.lv=TRUE)
+model_scales <- cfa(specification_scales
+		, data = items
+		#, sample.cov = cmatrix
+		#, sample.nobs = 999
+		#, estimator=cfaee_estimator
+		#, check.gradient = FALSE
+		#, std.lv=TRUE
+)
+#model_scales <- cfa(specification_scales, data=items, estimator=cfaee_estimator, check.gradient = FALSE, std.lv=TRUE)
 #LIST OF ESTIMATORS= MML WLSMV
 #CFA OPTIONS:
 #missing='ml.x', estimator='ML'
@@ -205,9 +213,9 @@ specification_scales <- input_disk_spec
 cfaee_estimator <- 'MML'
 
 model_scales <- cfa(specification_scales
-		    , data = items
-		#, sample.cov = cmatrix
-		#, sample.nobs = 999
+		#, data = items
+		, sample.cov = cmatrix
+		, sample.nobs = 999
 		#, estimator=cfaee_estimator
 		#, check.gradient = FALSE
 		#, std.lv=TRUE
