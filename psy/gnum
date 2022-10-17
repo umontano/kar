@@ -1,4 +1,6 @@
 
+cp -v ~/p/psychometric/scales_without_trailing_r.spec ./
+
 cp ~/p/psychometric/xCOVARIANCE_MATRIX_OUTLAIERS_IMPUTED.RData ./
 cp ~/p/psychometric/xCBQ_IMPUTED_ITEMS.csv ./imputed_items_valkarmfs.csv
 wget 'https://raw.githubusercontent.com/umontano/kar/master/psy/cfa_2models_evaluation_lavaan_function_CBQ.R'
