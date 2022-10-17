@@ -204,6 +204,7 @@ source('part3cfa_cbq.R')
 #using_each_scale_trimming_from_disk_spec_to_shortened_disk_spec(fits_list, 3, 0)
 
 
+#xxxxCOVARIANCE
 #TEST WITH COVARIANCE MATRIX FROM OUTLAIERS CLEANES AND IMPUTED
 library(lavaan)
 items <- read.csv('~/p/psychometric/xCBQ_OUTL....')[, -1]
