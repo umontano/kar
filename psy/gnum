@@ -1,0 +1,3 @@
+wget 'https://raw.githubusercontent.com/umontano/kar/master/psy/cfa_2models_evaluation_lavaan_function_CBQ.R'
+sed '1,/#xxxxCOVARIANCE/ d' *.R
+R CMD BATCH *.R xrout.txt
