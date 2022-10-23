@@ -243,8 +243,10 @@ allLatentVars <- readLines('~/p/psychometric/tttt/cbq_allLatentVars_scales.txt')
 unlist(allLatentVars)
 all_broadf <- c('CE', 'AN', 'SU')
 #METASEM OPENMX
-install.packages('metaSEM', dependencies=TRUE)
-install.packages('OpenMx', dependencies=TRUE)
+#install.packages('metaSEM', dependencies=TRUE)
+#install.packages('OpenMx', dependencies=TRUE)
+require(metaSEM)
+require(OpenMx)
 ## Compare the arrangements of variables with and without
 ## specifying the obs.variables arguments.
 openmx_scales_spec <- lavaan2RAM(specification_scales, obs.variables=allMeasuredVars)
