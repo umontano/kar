@@ -227,3 +227,36 @@ information_summary <- summary(model_scales, fit.measures=TRUE, standardized=TRU
 save(information_summary, file='summary_w_covariancematrix.RData', compress=TRUE)
 
 
+
+
+
+#==========================================
+#==========================================
+#READ ALL VARIABLES VECTOR
+allMeasuredVars <- readLines('~/p/psychometric/tttt/cbq_used_items.txt')
+allMeasuredVars <- gsub('r$', '', allMeasuredVars)
+unlist(allMeasuredVars)
+allMeasuredVars[allMeasuredVars == ''] <- list(NULL)
+unlist(allMeasuredVars)
+#LOAD ALL LATENT VECTOR
+allLatentVars <- readLines('~/p/psychometric/tttt/cbq_allLatentVars_scales.txt')
+unlist(allLatentVars)
+all_broadf <- c('CE', 'AN', 'SU')
+#METASEM OPENMX
+install.packages('metaSEM', dependencies=TRUE)
+install.packages('OpenMx', dependencies=TRUE)
+## Compare the arrangements of variables with and without
+## specifying the obs.variables arguments.
+openmx_scales_spec <- lavaan2RAM(specification_scales, obs.variables=allMeasuredVars)
+save(openmx_scales_spec, file='xOPENMXSCALESSPEC.RData', compress=TRUE)
+write(openmx_scales_spec, file='xOPENMXSCALESSPEC.txt')
+modelfit_openmxrun_scales <- mxRun(openmx_scales_spec)
+summfit_openmxrun_scales <- summary(modelfit_openmxrun_scales)	
+save(summfit_openmxrun_scales, file='xOPENMX_SUMMARY_SCALES.RData', compress=TRUE)
+#==========================================
+#==========================================
+pathLoadings = summfit_openmxrun_scales$parameters[,c("row", "col", "Std.Estimate")]
+pathLoadings$Std.Estimate = round(pathLoadings$Std.Estimate,2)
+pathLoadings
+
+
