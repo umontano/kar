@@ -233,15 +233,14 @@ save(information_summary, file='summary_w_covariancematrix.RData', compress=TRUE
 #==========================================
 #==========================================
 #READ ALL VARIABLES VECTOR
-allMeasuredVars <- readLines('~/p/psychometric/tttt/cbq_used_items.txt')
+allMeasuredVars <- readLines('cbq_all_measured_vars_items.txt')
 allMeasuredVars <- gsub('r$', '', allMeasuredVars)
-unlist(allMeasuredVars)
 allMeasuredVars[allMeasuredVars == ''] <- list(NULL)
 unlist(allMeasuredVars)
 #LOAD ALL LATENT VECTOR
-allLatentVars <- readLines('~/p/psychometric/tttt/cbq_allLatentVars_scales.txt')
+allLatentVars <- readLines('cbq_all_latent_vars_scales.txt')
 unlist(allLatentVars)
-all_broadf <- c('CE', 'AN', 'SU')
+allBroaddimVars <- c('CE', 'AN', 'SU')
 #METASEM OPENMX
 #install.packages('metaSEM', dependencies=TRUE)
 #install.packages('OpenMx', dependencies=TRUE)
