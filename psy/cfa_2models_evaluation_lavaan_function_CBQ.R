@@ -121,7 +121,7 @@ items <- read.csv('imputed_items_valkarmfs.csv', header=TRUE)[, -1]
 
 #fits_list <- fits_summaries_from_each_line_in_scale_spec('xscales.spec')
 #cfa_factors_evaluation_lavaan(scales)
-date_time <- format(Sys.time(), '_%y%m%d_%Hh%Mm%Ss_')
+date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
 #ressss <- cfa_scales_evaluation_lavaan(get_text_lines('xSHORTENED_FACTORS.spec'))
 #save(ressss, file=paste0('xRESSSS', date_time, '_.RData'), compress=TRUE)
 
@@ -131,7 +131,7 @@ date_time <- format(Sys.time(), '_%y%m%d_%Hh%Mm%Ss_')
 
 #lavaan WARNING: the optimizer (NLMINB) claimed converged
 #use check.gradient = FALSE to skip
-date_time <- format(Sys.time(), '_%y%m%d_%Hh%Mm%Ss_')
+date_time <- format(Sys.time(), 'x%y%m%d_%Hh%Mm%Ss_')
 
 #Initialize specification
 iterated_spec <- paste(readLines('xSHORTENED_FACTORS.spec'), collapse='\n')
